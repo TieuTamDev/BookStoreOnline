@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "GetAllBook";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<BookStoreOnline.Models.Product>
+@{
+    var price = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+    var user = Session["TaiKhoan"] as BookStoreOnline.Models.Customer;
+}
+
+
+<div class="container body-page">
+
+    <div class="row">
+        <div class="col-lg-3">
+            @{ Html.RenderAction("GetCategorySelection", "CategoryPartial");}
+        </div>
+        <div class="col-lg-9 list-book">
+            <h3 style="color:wheat">Tất cả sản phẩm</h3>
+            <div class="row">
+                <!-- product -->
+               
+
+                @foreach (var item in Model)
+                {
+                    <div class="prod-item">
+                        <div class="card" style="width: 17.5rem; background-color: rgba(255, 174, 185,0.3)" align="center">
+                            <a href="@Url.Action("Index/"+ item.ProductID,"ProductDetail")"><img style="width: 275px; height: 300px;object-fit:contain;"  src="~/Images/@item.ImageProd" alt="Card image cap"></a>
+                            <div class="card-body">
+                                <a href="@Url.Action("Index/"+ item.ProductID,"ProductDetail") " class="title-prod"> <h6 class="card-title" style="color: white; overflow: hidden;text-overflow:ellipsis; white-space: nowrap;">@item.ProductName </h6> </a>
+                                <h5 style="color: wheat;">@String.Format(price, "{0:c0}", item.Price)</h5>
+                                @if (user != null)
+                                {
+                                    <a href="@Url.Action("AddSingleProduct/"+ item.ProductID,"Cart")" class="add-to-cart-btn"><i class="ti-plus"></i></a>
+
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Login", "User")" class="add-to-cart-btn"><i class="ti-plus"></i></a>
+
+                                }
+                                <a href="@Url.Action("Index/"+ item.ProductID,"ProductDetail")" class="see-detail-prod"><i class="ti-eye"></i></a>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

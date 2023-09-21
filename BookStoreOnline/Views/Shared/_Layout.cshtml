@@ -1,0 +1,226 @@
+﻿@{
+
+    var user = Session["TaiKhoan"] as BookStoreOnline.Models.Customer;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chào mừng bạn đến với IT-Store</title>
+    <link href="~/fonts/themify-icons/themify-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="~/Content/style.css" rel="stylesheet" />
+</head>
+<body style="background-image: url('/Images/960702.jpg'); background-size: 100% 100%; background-attachment:fixed; background-repeat:no-repeat">
+
+ 
+    <!-- header     -->
+    <div class="header" style="padding: 0 0 0 0; background-color: rgb(19, 210, 237, 0.38); width: 100%">
+        <div class="container-fluid head-content">
+            <div class="row">
+                <div class="col-md-3 logo" align="center">
+                    <a href="@Url.Action("Index","Home")"><img style="width:auto" src="~/Images/ITBookStore.jpg"></a>
+                </div>
+                <div class="col-lg-6 head-middle">
+
+                    @using (Html.BeginForm("Search", "Category", FormMethod.Post))
+                    {
+                        <input type="text" name="inputString" placeholder="Nhập từ khóa tìm kiếm">
+                        <button type="submit"><i class="bi bi-search"></i></button>
+                    }
+                </div>
+                <div class="col-lg-3 head-right">
+                    @if (user == null)
+                    {
+                        <a href="#" class="cart-link"><i class="ti-shopping-cart"></i></a>
+
+                    }
+                    else
+                    {
+                        { Html.RenderAction("CartPartial", "Cart"); }
+                    }
+
+                    @if (user == null)
+                    {
+                        <a href="@Url.Action("Login","User")" class="login-link">Đăng nhập</a>
+                        <a href="@Url.Action("SignUp","User")" class="login-link" style="margin-left:5px">Đăng ký</a>
+                    }
+                    else
+                    {
+                        <div class="dropdown show">
+                            <a class="user-link-option" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="ti-user"></i>
+                                <span style="font-size: 20px;"> @user.NameCustomer</span>
+                            </a>
+
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="@Url.Action("Index/"+user.ID,"Order")">Đơn hàng của bạn</a>
+                                <a class="dropdown-item" href="@Url.Action("LogOut","User")">Đăng xuất</a>
+
+                            </div>
+                        </div>
+
+                    }
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- end-header -->
+    <!-- nav -->
+    <div class="nav" style="background-color: rgba(255, 255, 255, 0.85) ">
+        <div class="container nav-list">
+            <div class="row" style="align-items: center;">
+                <div class="col-md-1">
+                    @{Html.RenderAction("GetPartialCategoryNav", "CategoryPartial");}
+                </div>
+                <div class="col-md-1"></div>
+
+                <div class="col-md-7">
+
+                    <nav class="navbar navbar-expand-lg navbar-light">
+
+                        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                            <div class="navbar-nav">
+                                <a class="nav-item nav-link" href="@Url.Action("Index","Home")">Trang chủ <span class="sr-only">(current)</span></a>
+                                <a class="nav-item nav-link" href="@Url.Action("GetAllBook","Category")">Sản phẩm</a>
+                                <a class="nav-item nav-link" href="https://www.facebook.com/tieutamdev">Liên hệ</a>
+                            </div>
+                        </div>
+                    </nav>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end-nav -->
+
+    <div class="container">
+        @RenderBody()
+    </div>
+
+    <div class="footer" style="background-color: rgba(255, 48, 48,0.3)">
+        <div style="height:auto;width:100%" class="row">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-4 ">
+                            <div style="margin-block:50px" class="footer-static-title">
+                                <h3 style="margin: 12px;font-size:20px; font-weight: 700;color:white">DỊCH VỤ</h3>
+                            </div>
+
+                            <div class="footer-static-content">
+                                <ul style="list-style-type:none">
+                                    <li class="first">
+                                        <a href="" style="color:antiquewhite">Điều khoản sử dụng</a>
+                                    </li>
+
+                                    <li class="body">
+                                        <a href="" style="color:antiquewhite">Chính sách bảo mật thông tin cá nhân</a>
+                                    </li>
+
+                                    <li class="body">
+                                        <a href="" style="color:antiquewhite">Chính sách bảo mật thanh toán</a>
+                                    </li>
+
+                                    <li class="body">
+                                        <a href="" style="color:antiquewhite">Giới thiệu</a>
+                                    </li>
+
+                                    <li class="last body">
+                                        <a href="" style="color:antiquewhite">Hệ thống trung tâm - nhà sách</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div style="margin-block:50px" class="footer-static-title">
+                                <h3 style="margin: 20px;font-size:20px; font-weight: 700; color:white">HỔ TRỢ</h3>
+                            </div>
+                            <div class="footer-static-content">
+                                <ul style="list-style-type:none">
+                                    <li class="first">
+                                        <a href="" style="color:antiquewhite">Chính sách đổi - trả - hoàn tiền</a>
+                                    </li>
+
+                                    <li class="body">
+                                        <a href="" style="color:antiquewhite">Chính sách bảo hành - bồi hoàn</a>
+                                    </li>
+
+                                    <li class="body">
+                                        <a href="" style="color:antiquewhite">Chính sách vận chuyển</a>
+                                    </li>
+
+                                    <li class="body">
+                                        <a href="" style="color:antiquewhite">Chính sách khách sỉ</a>
+                                    </li>
+
+                                    <li class="last body">
+                                        <a href="" style="color:antiquewhite">Phương thức thanh toán và xuất HĐ</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div style="margin-block:50px" class="footer-static-title">
+                                <h3 style="margin:20px;font-size:20px;font-weight:700; color:white">TÀI KHOẢN CỦA TÔI</h3>
+                            </div>
+
+                            <div class="footer-static-content">
+                                <ul style="list-style-type:none">
+                                    <li class="first">
+                                        <a href="" style="color:antiquewhite">Đăng nhập/Tạo mới tài khoản</a>
+                                    </li>
+
+                                    <li class="body">
+                                        <a href="" style="color:antiquewhite">Thay đổi địa chỉ khách hàng</a>
+                                    </li>
+
+                                    <li class="body">
+                                        <a href="" style="color:antiquewhite">Chi tiết tài khoản </a>
+                                    </li>
+
+                                    <li class="body">
+                                        <a href="" style="color:antiquewhite">Lịch sử mua hàng </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <h4 style="font-size: 20px; font-weight: 700;color:white">LIÊN HỆ</h4>
+                        </div>
+
+                        <div class="row" style="margin: 15px;width:100%;">
+                            <div class="col-md-4">
+                                <i style="font-weight:900;font-size:18px;color:white" class="ti-location-pin"> Phú Trung, Tân Phú, TP. Hồ Chí Minh</i>
+                               
+                            </div>
+
+                            <div class="col-md-4">
+                                <i style="font-weight: 900; font-size: 18px;color:white" class="ti-email">mail@mail.com</i> 
+                            </div>
+
+                            <div class="col-md-4">
+                                <i style="font-weight:900;font-size:18px" class="ti-mobile"></i> 19001004
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

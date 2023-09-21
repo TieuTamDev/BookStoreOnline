@@ -1,0 +1,253 @@
+﻿@using BookStoreOnline.Models;
+@model List<CartItem>
+@{
+    ViewBag.Title = "GetCartInfo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var price = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+    var user = Session["TaiKhoan"] as BookStoreOnline.Models.Customer;
+}
+
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        color: #f00f;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        text-align: left;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        margin: auto;
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+
+        table th {
+            background-color: #ff9800;
+            color: #fff;
+            font-weight: bold;
+            padding: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-top: 1px solid #fff;
+            border-bottom: 1px solid #ccc;
+        }
+
+        table th {
+            background-color: #ff9800;
+            color: #f00f;
+            font-weight: bold;
+            padding: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-top: 1px solid #fff;
+            border-bottom: 1px solid #ccc;
+        }
+
+        table tr:nth-child(even) td {
+            background-color: #f2f2f2;
+        }
+
+        table tr:hover td {
+            background-color: #ffedcc;
+        }
+
+        table td {
+            background-color: #fff;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            font-weight: bold;
+        }
+
+    .wrapper {
+        position: fixed;
+        transform: translate(10%, -10%);
+    }
+
+    .link_wrapper {
+        position: relative;
+    }
+
+    .button {
+        display: block;
+        width: 250px;
+        height: 50px;
+        line-height: 50px;
+        font-weight: bold;
+        text-decoration: none;
+        background: #f12020;
+        text-align: center;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border: 3px solid #0aa8b755;
+        transition: all .35s;
+    }
+
+    .icon {
+        width: 50px;
+        height: 50px;
+        border: 3px solid transparent;
+        position: absolute;
+        transform: rotate(45deg);
+        right: 0;
+        top: 0;
+        z-index: -1;
+        transition: all .35s;
+    }
+
+        .icon svg {
+            width: 30px;
+            position: absolute;
+            top: calc(50% - 15px);
+            left: calc(50% - 15px);
+            transform: rotate(-45deg);
+            fill: #2ecc71;
+            transition: all .35s;
+        }
+
+    .button:hover {
+        width: 200px;
+        border: 3px solid #2ecc71;
+        background: transparent;
+        color: #2ecc71;
+    }
+
+        .button:hover + .icon {
+            border: 3px solid #2ecc71;
+            right: -25%;
+        }
+
+    a {
+        color: yellow
+    }
+
+        a:hover {
+            color: black
+        }
+</style><style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        color: #f00f;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        text-align: left;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        margin: auto;
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+
+        table th {
+            background-color: #ff9800;
+            color: #fff;
+            font-weight: bold;
+            padding: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-top: 1px solid #fff;
+            border-bottom: 1px solid #ccc;
+        }
+
+        table th {
+            background-color: #ff9800;
+            color: #f00f;
+            font-weight: bold;
+            padding: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-top: 1px solid #fff;
+            border-bottom: 1px solid #ccc;
+        }
+
+        table tr:nth-child(even) td {
+            background-color: #f2f2f2;
+        }
+
+        table tr:hover td {
+            background-color: #ffedcc;
+        }
+
+        table td {
+            background-color: #fff;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            font-weight: bold;
+        }
+</style>
+
+<div class="container body-page">
+    <table class="table">
+        <thead>
+            <tr>
+
+                <th scope="col">Sản phẩm</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Đơn giá</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr class="prod-list-table">
+
+                    <td class="prod-list-details" style="padding-top: 10px;">
+                        <img src="~/Images/@item.ImagePro" alt="">
+                        <h5 style="color:black;">@item.NamePro</h5>
+                    </td>
+                    <td>
+
+                        @using (Html.BeginForm("Update", "Cart", FormMethod.Post, new { @class = "edit-quantity" }))
+                        {
+                            <input type="number" name="Quantity" value="@item.Number" min="1">
+                            <input type="hidden" name="ProductID" value="@item.ProductID" />
+                            <button type="submit"><i class="bi bi-arrow-clockwise"></i></button>
+                        }
+                    </td>
+                    <td>
+                        <h5 >@String.Format(price, "{0:c0}", item.FinalPrice())</h5>
+                    </td>
+                    <td><a href="@Url.Action("Remove/"+item.ProductID,"Cart")" class="delete-prod-btn"    ><i class="bi bi-x-square-fill"></i></a></td>
+                </tr>
+            }
+
+
+
+        </tbody>
+    </table>
+
+    <hr />
+
+    @using (Html.BeginForm("InsertOrder", "Cart", FormMethod.Post, new { @class = "checkout-form" }))
+    {
+        <div class="row infor-order" style="color:wheat;">
+            <div class="col-lg-6">
+                <h5 class="address-title">Thông tin khách hàng</h5>
+                <textarea name="address" placeholder="Vui lòng nhạp số điện thoại và địa chỉ nhận hàng" rows="4" required></textarea>
+            </div>
+            <div class="col-lg-6">
+                <table class="table ">
+                    <tr>
+                        <td>Số lượng sản phẩm</td>
+                        <td>@ViewBag.TotalNumber</td>
+                    </tr>
+                    <tr>
+                        <td>Tổng giá</td>
+                        <td><h4>@String.Format(price, "{0:c0}", ViewBag.TotalPrice)</h4></td>
+                    </tr>
+                </table>
+                <button type="submit" class="checkout-btn">Đặt hàng</button>
+            </div>
+        </div>
+    }
+    </div>
+

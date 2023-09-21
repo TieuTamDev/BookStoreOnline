@@ -1,0 +1,45 @@
+﻿@model BookStoreOnline.Models.Category
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    a{
+        color:yellow
+    }
+    a:hover{
+        color:yellow
+    }
+</style>
+
+
+<div class="container">
+    <h2>Thêm danh mục mới</h2>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                Thể loại
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CategoryName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CategoryName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Thêm" class="btn btn-danger" />
+                    <div class="btn btn-info">
+                        @Html.ActionLink("Quay lại", "Index")
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
